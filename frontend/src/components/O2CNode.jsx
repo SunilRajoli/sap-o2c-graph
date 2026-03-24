@@ -19,7 +19,7 @@ export function O2CNode({ data }) {
         className="!h-2 !w-2 !border-0 !bg-white/50"
       />
       <div
-        className="min-w-[130px] max-w-[220px] rounded-lg border border-white/25 px-3 py-2 text-xs font-medium text-white shadow-sm"
+        className="min-w-[160px] max-w-[260px] cursor-pointer rounded-lg border border-white/30 px-3 py-2.5 text-[13px] font-medium leading-snug text-white shadow-[0_4px_14px_rgba(15,23,42,0.22)]"
         style={{ backgroundColor: bg }}
         title={data.label}
       >

@@ -1,6 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 
+function TypingIndicator() {
+  return (
+    <div
+      className="flex items-center gap-2 rounded-2xl border border-slate-200/80 bg-slate-100 px-3 py-2.5"
+      role="status"
+      aria-label="Assistant is typing"
+    >
+      <div className="typing-dots flex items-center gap-1" aria-hidden>
+        <span className="typing-dot h-1.5 w-1.5 rounded-full bg-slate-500" />
+        <span className="typing-dot h-1.5 w-1.5 rounded-full bg-slate-500" />
+        <span className="typing-dot h-1.5 w-1.5 rounded-full bg-slate-500" />
+      </div>
+    </div>
+  );
+}
+
 export function ChatPanel() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -57,45 +73,43 @@ export function ChatPanel() {
   }
 
   return (
-    <div className="flex min-h-0 min-w-0 flex-[2] flex-col bg-slate-50">
-      <div className="shrink-0 border-b border-slate-200 bg-white px-4 py-3">
-        <h2 className="text-sm font-semibold tracking-tight text-slate-800">
-          Chat
-        </h2>
-        <p className="text-xs text-slate-500">
-          Questions about orders, billing, and customers
-        </p>
-      </div>
-
-      <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3">
+    <div className="flex min-h-0 min-w-0 flex-col bg-white">
+      <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-4">
         {messages.length === 0 && !loading && (
-          <div className="rounded-xl border border-dashed border-slate-200 bg-white/60 px-4 py-8 text-center">
+          <div className="rounded-lg border border-dashed border-slate-200 bg-slate-50/50 px-4 py-10 text-center">
             <p className="text-sm leading-relaxed text-slate-600">
-              Ask me anything about your SAP data — sales orders, deliveries,
-              billing documents, payments, or customers.
+              Ask about sales orders, deliveries, billing documents, payments,
+              or customers in your SAP Order-to-Cash data.
             </p>
-            <p className="text-sm leading-relaxed text-slate-600"></p>
           </div>
         )}
         {messages.map((m) => (
           <div
             key={m.id}
-            className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            className={`flex gap-2 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
+            {m.role === 'assistant' && (
+              <div
+                className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#0f172a] text-[10px] font-bold tracking-tight text-white ring-2 ring-white"
+                aria-hidden
+              >
+                AI
+              </div>
+            )}
             <div
-              className={`max-w-[92%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
+              className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
                 m.role === 'user'
-                  ? 'bg-slate-800 text-white'
-                  : 'border border-slate-200 bg-white text-slate-800 shadow-sm'
+                  ? 'bg-[#0f172a] text-white shadow-sm'
+                  : 'border border-slate-200/80 bg-slate-100 text-slate-800'
               }`}
             >
               <div className="whitespace-pre-wrap">{m.content}</div>
               {m.role === 'assistant' && m.sql != null && m.sql !== '' && (
-                <details className="mt-2 border-t border-slate-100 pt-2 text-left">
-                  <summary className="cursor-pointer text-[10px] font-medium text-slate-400 hover:text-slate-600">
+                <details className="mt-2 border-t border-slate-200/80 pt-2 text-left">
+                  <summary className="cursor-pointer text-[10px] font-medium text-slate-500 hover:text-slate-700">
                     SQL query
                   </summary>
-                  <pre className="mt-1 max-h-36 overflow-auto rounded bg-slate-50 p-2 font-mono text-[10px] leading-snug text-slate-600">
+                  <pre className="mt-1 max-h-36 overflow-auto rounded-md bg-white/80 p-2 font-mono text-[10px] leading-snug text-slate-600">
                     {m.sql}
                   </pre>
                 </details>
@@ -104,20 +118,20 @@ export function ChatPanel() {
           </div>
         ))}
         {loading && (
-          <div className="flex justify-start">
-            <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-500 shadow-sm">
-              <span
-                className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-slate-200 border-t-slate-600"
-                aria-hidden
-              />
-              <span>Thinking…</span>
+          <div className="flex justify-start gap-2">
+            <div
+              className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#0f172a] text-[10px] font-bold tracking-tight text-white ring-2 ring-white"
+              aria-hidden
+            >
+              AI
             </div>
+            <TypingIndicator />
           </div>
         )}
         <div ref={bottomRef} />
       </div>
 
-      <div className="shrink-0 border-t border-slate-200 bg-white p-3">
+      <div className="shrink-0 border-t border-slate-200 bg-white px-4 pb-4 pt-3">
         <div className="flex gap-2">
           <textarea
             value={input}
@@ -129,15 +143,15 @@ export function ChatPanel() {
               }
             }}
             rows={2}
-            placeholder="Ask a question…"
+            placeholder="Ask a question about the dataset…"
             disabled={loading}
-            className="min-h-[44px] flex-1 resize-none rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-slate-400 disabled:opacity-60"
+            className="min-h-[48px] flex-1 resize-none rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 shadow-sm placeholder:text-slate-400 outline-none ring-0 transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200/80 disabled:opacity-60"
           />
           <button
             type="button"
             onClick={send}
             disabled={loading || !input.trim()}
-            className="shrink-0 self-end rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700 disabled:opacity-40"
+            className="shrink-0 self-end rounded-lg bg-[#0f172a] px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800 disabled:opacity-40"
           >
             Send
           </button>

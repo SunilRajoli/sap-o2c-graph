@@ -10,6 +10,9 @@ A full-stack app that **visualizes SAP Order-to-Cash relationships** as an inter
 - Renders the full O2C entity graph (Sales Orders → Deliveries → Billing → Payments) interactively
 - Lets you ask questions in plain English — the system generates SQL, executes it, and returns a grounded natural-language answer
 - Blocks off-topic queries with a multi-layer guardrail system
+- Offers two graph visualization modes:
+  Network View (organic cluster layout inspired by force-directed graphs) and 
+  Flow View (structured left-to-right dagre layout showing the O2C pipeline)
 
 ---
 
@@ -80,6 +83,17 @@ A single LLM call that returns a direct answer is ungrounded — the model can h
 
 This makes every answer fully auditable: the SQL is shown in the UI so users can verify exactly what was queried.
 
+### Why Two Graph Visualization Modes
+
+The Network View uses a seeded organic cluster layout — nodes of each entity type are grouped around a center point with stable randomized positions based on node ID. This creates a constellation-style view that shows relationship density across the O2C graph.
+
+The Flow View uses dagre's left-to-right layout which makes the business process 
+immediately readable:
+Customer → Sales Order → Delivery → Billing → Payment
+
+Both modes share the same underlying data and support node click, zoom, pan, and 
+fit-to-view. The toggle button switches between modes with auto-fit animation.
+
 ---
 
 ## O2C Data Flow
@@ -132,7 +146,7 @@ Every chat message passes through three layers before any SQL runs:
 ### 1. Clone and configure
 
 ```bash
-git clone https://github.com/your-username/sap-o2c-graph.git
+git clone https://github.com/SunilRajoli/sap-o2c-graph.git
 cd sap-o2c-graph
 cp .env.example .env
 ```
