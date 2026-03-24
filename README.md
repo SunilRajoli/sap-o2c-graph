@@ -1,5 +1,10 @@
 # SAP O2C Graph
 
+> **Live Demo:** https://sap-o2c-graph.vercel.app  
+> **GitHub:** https://github.com/SunilRajoli/sap-o2c-graph
+
+---
+
 A full-stack app that **visualizes SAP Order-to-Cash relationships** as an interactive graph and answers **natural-language questions** over the same data using an LLM-powered SQL pipeline.
 
 ---
