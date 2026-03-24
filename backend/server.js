@@ -48,9 +48,13 @@ const GROQ_MODEL = 'llama-3.3-70b-versatile';
 
 
 
-/** Browser origins allowed for CORS (Vite dev server on 5173). */
+const FRONTEND_URL = process.env.FRONTEND_URL || '';
 
-const CORS_ORIGINS = new Set(['http://localhost:5173', 'http://127.0.0.1:5173']);
+const CORS_ORIGINS = new Set([
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  FRONTEND_URL,
+].filter(Boolean));
 
 
 

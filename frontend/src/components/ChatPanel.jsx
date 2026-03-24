@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
+import API_BASE from '../config';
 
 function TypingIndicator() {
   return (
@@ -40,7 +41,7 @@ export function ChatPanel() {
     setLoading(true);
 
     try {
-      const { data } = await axios.post('/api/chat', {
+      const { data } = await axios.post(`${API_BASE}/api/chat`, {
         message: text,
         conversationHistory: history,
       });

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
+import API_BASE from '../config';
 import ReactFlow, {
   Background,
   Controls,
@@ -185,7 +186,7 @@ function GraphCanvas({ onNodeSelect, viewMode, onToggleViewMode }) {
       setLoading(true);
       setError(null);
       try {
-        const { data } = await axios.get('/api/graph');
+        const { data } = await axios.get(`${API_BASE}/api/graph`);
         if (cancelled) return;
 
         const rawNodes = (data.nodes ?? []).map((n) => ({
