@@ -1,5 +1,5 @@
 /**
- * Loads JSONL exports from <repo>/data/sap-o2c-data into backend/database.db
+ * Loads JSONL exports from backend/data/sap-o2c-data into backend/database.db
  * Run from backend: npm run ingest  (or: node scripts/ingest.js)
  */
 
@@ -14,7 +14,7 @@ const INSERT_BATCH_SIZE = 10_000;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BACKEND_ROOT = path.join(__dirname, '..');
-const DATA_DIR = path.join(BACKEND_ROOT, '..', 'data', 'sap-o2c-data');
+const DATA_DIR = path.join(BACKEND_ROOT, 'data', 'sap-o2c-data');
 const DB_PATH = path.join(BACKEND_ROOT, 'database.db');
 
 /** Remove SQLite db + WAL/SHM so schema DDL always runs on a clean file. */
@@ -28,7 +28,7 @@ function removeSqliteFiles(dbPath) {
   }
 }
 
-/** Subfolder name under data/sap-o2c-data → SQLite table name */
+/** Subfolder name under backend/data/sap-o2c-data → SQLite table name */
 const FOLDER_TO_TABLE = {
   sales_order_headers: 'sales_order_headers',
   sales_order_items: 'sales_order_items',

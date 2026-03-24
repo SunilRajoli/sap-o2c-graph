@@ -163,7 +163,7 @@ PORT=3001
 Extract the JSONL dataset into:
 
 ```
-data/sap-o2c-data/
+backend/data/sap-o2c-data/
   billing_document_headers/
   billing_document_items/
   sales_order_headers/
@@ -244,6 +244,8 @@ Which customer has the highest total order value?
 sap-o2c-graph/
 ├── backend/
 │   ├── server.js              # Express API, Groq integration, SQL prompts
+│   ├── data/
+│   │   └── sap-o2c-data/      # Entity JSONL folders
 │   └── scripts/
 │       └── ingest.js          # JSONL → SQLite ingestion
 ├── frontend/
@@ -251,8 +253,6 @@ sap-o2c-graph/
 │       ├── App.jsx            # Root layout
 │       ├── GraphPanel.jsx     # React Flow graph
 │       └── ChatPanel.jsx      # Chat interface
-├── data/
-│   └── sap-o2c-data/          # Entity JSONL folders
 ├── .env.example
 └── README.md
 ```
